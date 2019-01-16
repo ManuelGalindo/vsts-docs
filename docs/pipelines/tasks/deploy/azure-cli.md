@@ -71,6 +71,23 @@ None
 | **Advanced - Fail on Standard Error** | Set this option if you want the build to fail if errors are written to the **StandardError** stream. |
 | **Control options** | See [Control options](../../process/tasks.md#controloptions) |
 
+## Examples
+### Return a value from a command on a Variable
+
+Create Az CLI Script, create myData Variable
+
+```ps
+FOR /F "tokens=* USEBACKQ" %%F IN (`az ad sp list --display-name HelloKeyVaultApp --query "[].{Id:objectId}" --o table`) DO (
+SET var=%%F
+)
+echo "##vso[task.setvariable variable=myData;]%var%"
+
+Add a PowerShell task and return the value 
+
+```ps
+Write-Host "My ID is $Env:MYDATA"
+
+
 ## Related tasks
 
 * [Azure Resource Group Deployment](azure-resource-group-deployment.md)
